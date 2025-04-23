@@ -76,6 +76,23 @@ print(f"\nCarrier with Highest Average Delay: {highest_avg_delay_carrier} ({high
 avg_taxi_out_time = data["TaxiOut"].mean()
 print(f"\nAverage Taxi-Out Time: {avg_taxi_out_time:.2f} minutes")
 
+# Calculate the percentage of flights delayed
+total_flights = len(data)
+delayed_flights = len(data[data["ArrDelay"] > 0])
+percentage_delayed = (delayed_flights / total_flights) * 100
+print(f"\nPercentage of Flights Delayed: {percentage_delayed:.2f}%")
+
+# Analyze the average delay per month
+data["Month"] = data["FlightDate"].dt.month
+average_delay_per_month = data.groupby("Month")["ArrDelay"].mean()
+print("\nAverage Delay per Month:")
+print(average_delay_per_month)
+
+# Analyze the average delay per carrier
+average_delay_per_carrier = data.groupby("Reporting_Airline")["ArrDelay"].mean()
+print("\nAverage Delay per Carrier:")
+print(average_delay_per_carrier)
+
 # Show top 10 origins with highest carrier delay
-print("\\nTop 10 Origins with Highest Carrier Delay:")
+print("\nTop 10 Origins with Highest Carrier Delay:")
 print(origin_delays.head(10))
