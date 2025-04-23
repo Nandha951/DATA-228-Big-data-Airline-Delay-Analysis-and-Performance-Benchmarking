@@ -94,7 +94,8 @@ print("\nAverage Delay per Carrier:")
 print(average_delay_per_carrier)
 
 # Calculate the average delay per day of the week
-average_delay_per_day_of_week = data.groupby("DayOfWeek")["ArrDelay"].mean().sort_index()
+day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+average_delay_per_day_of_week = data.groupby("DayOfWeek")["ArrDelay"].mean().reindex(day_order)
 print("\nAverage Delay per Day of the Week:")
 print(average_delay_per_day_of_week)
 
