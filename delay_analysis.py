@@ -6,8 +6,11 @@ all_data = pd.DataFrame()
 for filename in os.listdir("./Dataset"):
     if filename.startswith("2024_") and filename.endswith(".csv"):
         filepath = os.path.join("./Dataset", filename)
-        data = pd.read_csv(filepath)
+        data = pd.read_csv(filepath, dtype={'CarrierDelay': float, 'WeatherDelay': float, 'NASDelay': float, 'SecurityDelay': float, 'LateAircraftDelay': float, 'ArrDelay': float})
         all_data = pd.concat([all_data, data], ignore_index=True)
+
+all_data["FlightDate"] = pd.to_datetime(all_data["FlightDate"])
+all_data["DayOfWeek"] = all_data["FlightDate"].dt.day_name()
 
 data = all_data
 
@@ -62,8 +65,6 @@ most_common_destination = data["Dest"].value_counts().idxmax()
 print(f"\nMost Common Destination Airport: {most_common_destination}")
 
 # Analyze average delay per day of the week
-data["FlightDate"] = pd.to_datetime(data["FlightDate"])
-data["DayOfWeek"] = data["FlightDate"].dt.day_name()
 average_delay_per_day = data.groupby("DayOfWeek")["ArrDelay"].mean().sort_values()
 # Find the carrier with the highest average delay
 carrier_avg_delay = data.groupby("Reporting_Airline")["ArrDelay"].mean()
