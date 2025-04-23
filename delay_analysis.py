@@ -89,9 +89,22 @@ print("\nAverage Delay per Month:")
 print(average_delay_per_month)
 
 # Analyze the average delay per carrier
-average_delay_per_carrier = data.groupby("Reporting_Airline")["ArrDelay"].mean()
+average_delay_per_carrier = data.groupby("Reporting_Airline")["ArrDelay"].mean().sort_values(ascending=False)
 print("\nAverage Delay per Carrier:")
 print(average_delay_per_carrier)
+
+# Calculate the average delay per day of the week
+average_delay_per_day_of_week = data.groupby("DayOfWeek")["ArrDelay"].mean().sort_index()
+print("\nAverage Delay per Day of the Week:")
+print(average_delay_per_day_of_week)
+
+# Find the most common origin and destination airport pair
+most_common_airport_pair = data.groupby(["Origin", "Dest"]).size().sort_values(ascending=False).idxmax()
+print(f"\nMost Common Origin and Destination Airport Pair: {most_common_airport_pair}")
+
+# Analyze the correlation between distance and delay
+correlation_distance_delay = data["Distance"].corr(data["ArrDelay"])
+print(f"\nCorrelation between Distance and Delay: {correlation_distance_delay:.2f}")
 
 # Show top 10 origins with highest carrier delay
 print("\nTop 10 Origins with Highest Carrier Delay:")
